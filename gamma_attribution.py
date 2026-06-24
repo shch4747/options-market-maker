@@ -1,23 +1,3 @@
-"""
-gamma_attribution.py - Module 6 of the Options Market Maker (finale)
-
-Cracks open the hedged P&L day-by-day and attributes it to the two Greeks that
-actually drive a delta-hedged option book:
-
-    daily P&L (short option, delta-hedged)  ~=  theta_pnl  +  gamma_pnl
-    where   theta_pnl = +(daily time decay we collect, since we're short)
-            gamma_pnl = -0.5 * Gamma * (dS)^2   (we PAY on big moves)
-
-We compute each daily P&L EXACTLY by revaluation, split it into an exact theta
-piece (reprice holding S fixed, step time forward) and a spot piece (reprice
-holding time fixed, move S), then compare the spot piece against the gamma
-approximation -0.5*Gamma*dS^2. Plotting daily P&L vs (dS)^2 yields the signature
-downward line of a short-gamma book.
-
-Integrates with: black_scholes.py (black_scholes, delta, gamma)
-Data: reuses backtest.fetch_data when run locally; falls back to synthetic.
-"""
-
 import numpy as np
 import pandas as pd
 from black_scholes import black_scholes, delta, gamma
