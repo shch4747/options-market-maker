@@ -1,24 +1,3 @@
-"""
-vol_smile.py - Module 7 of the Options Market Maker (the cherry on top)
-
-Pulls a live options chain, inverts each strike's market mid-price into an
-implied volatility using the Module 2 solver, and plots the volatility smile /
-skew. Then it demonstrates the concrete failure of the flat-vol Black-Scholes
-assumption: price every strike with a single ATM vol and measure the mispricing
-against the market.
-
-The point: BS assumes ONE volatility for all strikes (a flat line). Real markets
-price a SKEW -- OTM puts carry higher implied vol than OTM calls (crash fear).
-That curve is exactly where a flat-vol model misprices, and this module
-quantifies it in dollars.
-
-We use the liquid OTM wing of each side (puts below spot, calls above) because
-those are the cleanest, tightest-quoted options to invert.
-
-Integrates with: black_scholes.py, implied_vol.py  (the Module 2 solver)
-Data: yfinance (run locally, needs internet).
-"""
-
 import numpy as np
 import pandas as pd
 from datetime import datetime
