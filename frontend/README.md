@@ -3,9 +3,10 @@
 A live web dashboard for Black–Scholes pricing, Greeks, and market-maker quotes,
 built on the options market maker engine. React frontend + FastAPI backend.
 
-**Live demo:** _add your Vercel URL here_
+**Live demo:** https://options-market-maker-oh6ey1r52-shch6047.vercel.app/
 
-![dashboard](screenshot.png)
+![dashboard top](screenshot1.png)
+![dashboard bottom](screenshot2.png)
 
 ## What it does
 - Drag the contract inputs (spot, strike, expiry, rate, vol; call/put) and watch
