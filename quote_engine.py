@@ -1,29 +1,3 @@
-"""
-quote_engine.py — Module 3 of the Options Market Maker
-
-Turns a theoretical value into an actual two-sided market: a bid (we buy here)
-and an ask (we sell here), with the spread scaled by risk.
-
-Core market-maker logic:
-  - We never trade AT theo. We quote bid = theo - half_spread, ask = theo + half_spread.
-    The spread is our compensation for providing liquidity and warehousing risk.
-  - The spread WIDENS with risk. Two drivers:
-       * volatility (sigma): higher vol => value is more uncertain / can move
-         against us faster => demand a wider spread.
-       * vega exposure: the more sensitive the option is to a vol move (vega
-         peaks near-the-money), the more an unexpected vol shock hurts => widen.
-
-  half_spread = base + k_vol * sigma + k_vega * vega_display
-
-We report the quote in DOLLARS (what we actually post) and the spread in BPS
-(relative to theo), so spreads are comparable across cheap and expensive options
-and feed cleanly into the backtest's revenue accounting later.
-
-Integrates with black_scholes.py:
-    black_scholes(S, K, T, r, sigma, option_type)
-    vega(S, K, T, r, sigma)   -> vega per 1% vol move (the 'display' vega)
-"""
-
 from dataclasses import dataclass
 from black_scholes import black_scholes, vega
 
