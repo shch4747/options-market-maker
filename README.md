@@ -41,6 +41,27 @@ The left scatter is the short-gamma signature: small positive P&L on calm days
 negative by construction. The right panel shows theta income and gamma cost
 accumulating in opposite directions, their gap being the strategy's edge.
 
+### Where Black–Scholes breaks: the volatility smile
+
+Inverting every strike of a live SPY chain back into its implied vol (using the
+Module 2 solver) reveals the volatility **skew** — and the concrete failure of
+the flat-vol BS assumption:
+
+![Volatility smile](vol_smile.png)
+
+| | Implied vol |
+|---|---|
+| ATM (the single vol BS would use) | 17.9% |
+| ~90% moneyness (OTM put wing) | 26.4% |
+| ~110% moneyness (OTM call wing) | 13.1% |
+| **Put–call skew** | **+13.4 vol points** |
+
+The market prices a steep downside skew — far-OTM puts trade near 55–58% implied
+vol vs 18% ATM — because investors pay up for crash protection. Black–Scholes
+assumes one flat vol for all strikes (the red line), so it **misprices the wings
+by up to ~70%**. This is exactly the model error a market maker must account for,
+and it falls straight out of the Module 2 IV solver.
+
 ---
 
 ## Modules
@@ -53,6 +74,7 @@ accumulating in opposite directions, their gap being the strategy's edge.
 | 4 | `hedging_engine.py` | Monte-Carlo delta-hedging sim; sweeps re-hedge frequency to map hedging-error vs transaction-cost; splits realised vs implied vol to show the vol-arb P&L |
 | 5 | `backtest.py` | Real-data backtest of the delta-hedged short-vol book on SPY/VIX; Sharpe, win rate, drawdown, P&L decomposition |
 | 6 | `gamma_attribution.py` | Day-by-day attribution of hedged P&L into theta income vs gamma cost; the short-gamma signature plot |
+| 7 | `vol_smile.py` | Inverts a live SPY chain into implied vols via the M2 solver; plots the smile/skew and quantifies flat-vol BS mispricing in dollars |
 
 ---
 
@@ -114,7 +136,8 @@ python quote_engine.py       # M3 quote tables
 python hedging_engine.py     # M4 hedging-error vs cost + vol-arb experiments
 python backtest.py           # M5 real-data backtest  (needs internet)
 python gamma_attribution.py  # M6 theta/gamma attribution + signature plot
+python vol_smile.py          # M7 live-chain volatility smile + mispricing  (needs internet)
 ```
 
-Modules 5–6 pull SPY and VIX history via `yfinance`. Module 6 falls back to a
-synthetic path if offline.
+Modules 5–7 pull SPY (and VIX) data via `yfinance`. Module 6 falls back to a
+synthetic path if offline; Module 7 uses `lastPrice` when the US market is closed.
