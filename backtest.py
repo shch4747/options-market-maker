@@ -1,28 +1,3 @@
-"""
-backtest.py - Module 5 of the Options Market Maker
-
-Backtests a delta-hedged short-option book on REAL market data -- the inventory
-profile of a market maker who is net short options and harvesting the vol risk
-premium.
-
-Strategy (rolling, systematic):
-  - Every `roll_days` trading days, SELL a `tenor_days` ATM call on the underlying.
-  - Price/sell it at the market's IMPLIED vol, proxied by VIX on that date.
-  - Credit the market-maker spread we'd capture (half-spread from the quote engine).
-  - Delta-hedge DAILY along the real historical price path until expiry.
-  - Charge transaction costs on every hedge trade.
-  - At expiry, settle the payoff against the real terminal price.
-
-Per-trade PnL = spread_capture + premium - hedging_cost - payoff
-             = (market-making edge) + (realized-vs-implied vol premium)
-
-Across all rolling trades -> PnL distribution -> Sharpe, win rate, max drawdown.
-
-Requires (run locally, needs internet):
-    pip install yfinance pandas numpy matplotlib
-Integrates with: black_scholes.py, quote_engine.py
-"""
-
 import numpy as np
 import pandas as pd
 from black_scholes import black_scholes, delta
